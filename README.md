@@ -1,2 +1,2 @@
 # GildedRose-Refactoring-Kata-master
-Recrutment challenge
+Not yet young padawan
