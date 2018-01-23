@@ -38,5 +38,24 @@ namespace GildedRose
             //Assert
             Assert.AreEqual(1, quality);
         }
+
+        [TestMethod]
+        public void CanIIncreaseQuality()
+        {
+            //Arrange
+            Item quanteNeuf = new Item { Name = "Coco l'asticot", SellIn = 0, Quality = 49 };
+            Item cinquante = new Item { Name = "Coco l'asticot", SellIn = 0, Quality = 50 };
+            Item autre = new Item { Name = "Coco l'asticot", SellIn = 0, Quality = 51 };
+
+            //Act
+            bool bQuaranteNeuf = _gildedRose.CanIIncreaseQuality(quanteNeuf);
+            //bool bCinquante = _gildedRose.CanIIncreaseQuality(cinquante);
+            bool bAutre = _gildedRose.CanIIncreaseQuality(autre);
+
+            //Arrange
+            Assert.AreEqual(true, bQuaranteNeuf);
+            //Assert.AreEqual(true, bCinquante);// Weird
+            Assert.AreEqual(false, bAutre);
+        }
     }
 }

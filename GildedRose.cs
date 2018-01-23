@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GildedRose
 {
@@ -33,31 +34,31 @@ namespace GildedRose
                     {
                         if (this.IsNotLegendary(_items[i]))
                         {
-                            _items[i].Quality = _items[i].Quality - 1;
+                            _items[i].Quality = this.IncrementQuality(_items[i]);
                         }
                     }
                 }
                 else
                 {
-                    if (_items[i].Quality < 50)
+                    if (this.CanIIncreaseQuality(_items[i]))
                     {
-                        _items[i].Quality = _items[i].Quality + 1;
+                        _items[i].Quality = this.IncrementQuality(_items[i]);
 
                         if (_items[i].Name == "Backstage passes to a TAFKAL80ETC concert")
                         {
                             if (_items[i].SellIn < 11)
                             {
-                                if (_items[i].Quality < 50)
+                                if (this.CanIIncreaseQuality(_items[i]))
                                 {
-                                    _items[i].Quality = _items[i].Quality + 1;
+                                    _items[i].Quality = this.IncrementQuality(_items[i]);
                                 }
                             }
 
                             if (_items[i].SellIn < 6)
                             {
-                                if (_items[i].Quality < 50)
+                                if (this.CanIIncreaseQuality(_items[i]))
                                 {
-                                    _items[i].Quality = _items[i].Quality + 1;
+                                    _items[i].Quality = this.IncrementQuality(_items[i]);
                                 }
                             }
                         }
@@ -90,15 +91,36 @@ namespace GildedRose
                     }
                     else
                     {
-                        if (_items[i].Quality < 50)
+                        if (this.CanIIncreaseQuality(_items[i]))
                         {
-                            _items[i].Quality = IncrementQuality(_items[i]);
+                            _items[i].Quality = this.IncrementQuality(_items[i]);
                         }
                     }
                 }
             }
         }
-        
+
+        /// <summary>
+        /// Can you increased the quality, indeed it's a good question
+        /// </summary>
+        /// <param name="item">Item you want to increase the quality</param>
+        /// <returns></returns>
+        public bool CanIIncreaseQuality(Item item)
+        {
+            if (item.Quality < 50)
+            {
+                return true;
+            }
+            else if (item.Quality == 50)
+            {
+                throw new Exception("What should I do ?");
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// Tell you strangely if we have the maximum quality
         /// </summary>
