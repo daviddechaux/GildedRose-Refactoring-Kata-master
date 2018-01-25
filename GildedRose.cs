@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace GildedRose
 {
@@ -21,6 +20,7 @@ namespace GildedRose
 
         /// <summary>
         /// Where the magic happens.
+        /// You can change whatever you want here
         /// And please can you clean up a little bit this mess please
         /// PS : No bug
         /// </summary>
@@ -28,76 +28,115 @@ namespace GildedRose
         {
             for (var i = 0; i < _items.Count; i++)
             {
-                if (_items[i].Name != "Aged Brie" && _items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
+                Item item = _items[i];
+
+                if (item.Name != "Aged Brie" && !this.IsBackstagePasse(item))
                 {
-                    if (_items[i].Quality > 0)
+                    if (item.Quality > 0)
                     {
-                        if (this.IsNotLegendary(_items[i]))
+                        if (this.IsNotLegendary(item))
                         {
-                            _items[i].Quality = this.IncrementQuality(_items[i]);
+                            item.Quality = this.IncrementQuality(item);
                         }
                     }
                 }
                 else
                 {
-                    if (this.CanIIncreaseQuality(_items[i]))
+                    if (this.IsBackstagePasse(item))
                     {
-                        _items[i].Quality = this.IncrementQuality(_items[i]);
+                        QualityThreshold qualityThreshold = this.GetQualityThreshold(_items[i]);
+                        int quityIncreaser = Tools.GetEnumDescriptionEnh(qualityThreshold);
 
-                        if (_items[i].Name == "Backstage passes to a TAFKAL80ETC concert")
+                        if (item.SellIn < (int)qualityThreshold)
                         {
-                            if (_items[i].SellIn < 11)
-                            {
-                                if (this.CanIIncreaseQuality(_items[i]))
-                                {
-                                    _items[i].Quality = this.IncrementQuality(_items[i]);
-                                }
-                            }
-
-                            if (_items[i].SellIn < 6)
-                            {
-                                if (this.CanIIncreaseQuality(_items[i]))
-                                {
-                                    _items[i].Quality = this.IncrementQuality(_items[i]);
-                                }
-                            }
+                            item = this.ManageQuality(item, quityIncreaser);
+                        }
+                    }
+                    else
+                    {
+                        if (this.CanIIncreaseQuality(item))
+                        {
+                            item.Quality = this.IncrementQuality(item);
                         }
                     }
                 }
 
-                if (this.IsNotLegendary(_items[i]))
+                if (this.IsNotLegendary(item))
                 {
-                    _items[i].SellIn = _items[i].SellIn - 1;
+                    item.SellIn = item.SellIn - 1;
                 }
 
-                if (_items[i].SellIn < 0)
+                if (item.SellIn < 0)
                 {
-                    if (_items[i].Name != "Aged Brie")
+                    if (item.Name != "Aged Brie")
                     {
-                        if (_items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
+                        if (this.IsBackstagePasse(item))
                         {
-                            if (_items[i].Quality > 0)
+                            if (item.Quality > 0)
                             {
-                                if (this.IsNotLegendary(_items[i]))
+                                if (this.IsNotLegendary(item))
                                 {
-                                    _items[i].Quality = _items[i].Quality - 1;
+                                    item.Quality = this.IncrementQuality(item, -1);
                                 }
                             }
                         }
                         else
                         {
-                            _items[i].Quality = _items[i].Quality - _items[i].Quality;
+                            item.Quality = this.IncrementQuality(item, item.Quality * -1);
                         }
                     }
                     else
                     {
-                        if (this.CanIIncreaseQuality(_items[i]))
+                        if (this.CanIIncreaseQuality(item))
                         {
-                            _items[i].Quality = this.IncrementQuality(_items[i]);
+                            item = this.ManageQuality(item, 1);
                         }
                     }
                 }
+
+                _items[i] = item;
             }
+        }
+
+        /// <summary>
+        /// Tell if the item is a backstage pass 
+        /// Sing "I'm a murloc"
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public bool IsBackstagePasse(Item item)
+        {
+            return item.Name.EndsWith("Backstage");
+        }
+
+        /// <summary>
+        /// Manage the quality of an item
+        /// </summary>
+        /// <param name="item">item to manage</param>
+        /// <param name="qualityIncreaser">The value of the quality should be increase of (I don't think this sentence is correct)</param>
+        private Item ManageQuality(Item item, int qualityIncreaser)
+        {
+            if (this.CanIIncreaseQuality(item))
+            {
+                item.Quality = this.IncrementQuality(item, qualityIncreaser);
+            }
+
+            return item;
+        }
+
+        /// <summary>
+        /// Return the quality threshold enum depending the sellin left
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public QualityThreshold GetQualityThreshold(Item item)
+        {
+            if (item.SellIn < (int) QualityThreshold.TripleQuality)
+                return QualityThreshold.TripleQuality;
+            else if (item.SellIn < (int)QualityThreshold.DoubleQuality)
+                return QualityThreshold.DoubleQuality;
+
+            return QualityThreshold.MaxQuality;
         }
 
         /// <summary>
@@ -125,10 +164,14 @@ namespace GildedRose
         /// Tell you strangely if we have the maximum quality
         /// </summary>
         /// <param name="item">The item you want to increment quality</param>
+        /// <param name="qualityIncreaser">The value of the quality should be increase of (I don't think this sentence is correct)</param>
         /// <returns></returns>
-        public int IncrementQuality(Item item)
+        public int IncrementQuality(Item item, int qualityIncreaser = 1)
         {
-            return item.Quality + 1;
+            if (item.Quality < (int)QualityThreshold.MaxQuality)
+                return item.Quality + qualityIncreaser;
+
+            return item.Quality;
         }
 
         /// <summary>
