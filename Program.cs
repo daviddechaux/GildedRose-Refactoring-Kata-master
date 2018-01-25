@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace GildedRose
 {
+    /// <summary>
+    /// Please do not change this class
+    /// </summary>
     public static class Program
     {
         public static void Main()
