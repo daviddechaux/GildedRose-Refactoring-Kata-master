@@ -51,12 +51,12 @@ namespace GildedRose
 
             //Act
             bool bQuaranteNeuf = _gildedRose.CanIIncreaseQuality(quanteNeuf);
-            //bool bCinquante = _gildedRose.CanIIncreaseQuality(cinquante);
+            bool bCinquante = _gildedRose.CanIIncreaseQuality(cinquante);
             bool bAutre = _gildedRose.CanIIncreaseQuality(autre);
 
             //Assert
             Assert.AreEqual(true, bQuaranteNeuf);
-            //Assert.AreEqual(true, bCinquante);// Weird
+            Assert.AreEqual(true, bCinquante);// Weird
             Assert.AreEqual(false, bAutre);
         }
 

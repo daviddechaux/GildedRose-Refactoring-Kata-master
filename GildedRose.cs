@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+// Name : 
+
 namespace GildedRose
 {
     public class GildedRoseKata
@@ -150,10 +152,10 @@ namespace GildedRose
             {
                 return true;
             }
-            //else if (item.Quality == 50)
-            //{
-            //    throw new Exception("What should I do ?");
-            //}
+            else if (item.Quality == 50)
+            {
+                throw new Exception("What should I do ?");
+            }
             else
             {
                 return false;
