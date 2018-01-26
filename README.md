@@ -1,12 +1,12 @@
 # GildedRose-Refactoring-Kata-master
 ***Under test, please do not commit anything***
 
-*The original test comes from here, I just adapt them to make them in a short amount of time (< 30 min).*
+*The original test comes from here, I just adapt them to make them in a short amount of time (< 30 min).*  
 https://github.com/emilybache/GildedRose-Refactoring-Kata   
 https://github.com/NotMyself/GildedRose    
 
 # Do
-* Add your name at tthe top of the `GildedRose` class please
+* Add your name at the top of the `GildedRose` class please
 * Read carrefully the following text
 * Ask question if needed
 * There are some errors that you have to correct
