@@ -1,25 +1,29 @@
 # GildedRose-Refactoring-Kata-master
 ***Under test, please do not commit anything***
 
-*The original test comes from here, I just adapt them to make them in a short amount of time (< 30 min).*
+*The original test comes from here, it's has been updated to make them in a shorter amout of time (< 30 min).*
 https://github.com/emilybache/GildedRose-Refactoring-Kata   
 https://github.com/NotMyself/GildedRose    
 
+In order to make it easier, we added some unit tests, they don't cover everything (but still an important part) and some may need to be completed.
+
+There is a global "integration" test named "ApprovalTest" this test ensure that the run of your program.cs is still the same as expected. You will have to edit "ApprovalTest.ThirtyDays.approved.txt" once the conjured item added.
 # Do
 * Add your name at tthe top of the `GildedRose` class please
 * Read carrefully the following text
 * Ask question if needed
-* There are some errors that you have to correct
 * Enjoy
 * Any remark is welcome
+* Feel totally free to create new tests
 
 # Don't
 * Google, you won't have enough time. But I'm not your father, feel free to do it anyway.
-* Do not underestimate my dishonesty
+* Modify the Item class
+* Modify Program.cs (do only to decomment the conjured item)
 
 # Gilded Rose Inn
 
-> Hi and welcome to team `Gilded Rose`. As you know, we are a small inn with a prime location in a prominent city ran by a friendly innkeeper named Allison.   
+> Hi and welcome to the team `Gilded Rose`. As you know, we are a small inn with a prime location in a prominent city ran by a friendly innkeeper named Allison.   
 We also buy and sell only the finest goods. Unfortunately, our goods are constantly degrading in quality as they approach their sell by date.  
 We have a system in place that updates our inventory for us.   
 It was developed by a no-nonsense type named `Leeroy`, who has moved on to new adventures.   
@@ -44,8 +48,8 @@ Pretty simple, right? Well this is where it gets interesting:
 * **Conjured** items degrade in Quality twice as fast as normal items  
 
 
-Feel free to make **any changes** to the `UpdateQuality` method and add any new code as long as everything ~~still~~ (*sorry guys I break some stuff :)*) works correctly. However, **do not** alter the **Item class or Items property** as those belong to the goblin in the corner who will insta-rage and one-shot you as he doesn't believe in shared code ownership.  
-~~You can make the UpdateQuality method and Items property static if you like, we'll cover for you~~ No you can't. Sorry guys, I lower the difficulty of the challenge in order to make it doable in a limited time, so please **no new static method**. 
+Feel free to make **any changes** to the `UpdateQuality` method and add any new code as long as everything ~~still~~ works correctly. However, **do not** alter the **Item class or Items property** as those belong to the goblin in the corner who will insta-rage and one-shot you as he doesn't believe in shared code ownership.  
+You can make the UpdateQuality method and Items property static if you like, we'll cover for you.
 
 Just for clarification, an item can never have its Quality increase above 50, however "Sulfuras" is a legendary item and as such its Quality is 80 and it never alters.
 

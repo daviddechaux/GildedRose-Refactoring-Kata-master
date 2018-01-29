@@ -1,98 +1,114 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
+using GildedRose;
+using Xunit;
 
-namespace GildedRose
+namespace csharp
 {
-    [TestClass]
     public class GildedRoseTest
     {
-        private GildedRoseKata _gildedRose;
-
-        [TestInitialize]
-        public void Init()
+        [Theory]
+        [InlineData("spoon",10,10)]
+        [InlineData("fork",5,5)]
+        public void UpdateQuality_WithClassicalItemAndSellinAbove0_DecreasesQuality(string name, int sellIn, int quality)
         {
-            _gildedRose = new GildedRoseKata(null);
+            IList<Item> Items = new List<Item> { new Item { Name = name, SellIn = sellIn, Quality = quality } };
+            GildedRose app = new GildedRose(Items);
+            app.UpdateQuality();
+            Assert.Equal(quality - 1, Items[0].Quality);
         }
 
-        [TestMethod]
-        public void IsLegendary()
+        [Theory]
+        [InlineData("spoon", 10, 10)]
+        [InlineData("fork", 5, 5)]
+        public void UpdateQuality_WithClassicalItemAndSellinAbove0_DecreasesSellin(string name, int sellIn, int quality)
         {
-            //Arrange
-            Item legendary = new Item { Name = "Sulfuras, Hand of Ragnaros", SellIn = 0, Quality = 0 };
-            Item notLegendary = new Item { Name = "This is not Sulfuras", SellIn = 0, Quality = 0 };
-
-            //Act - Assert
-            Assert.IsFalse(_gildedRose.IsNotLegendary(legendary));
-            Assert.IsTrue(_gildedRose.IsNotLegendary(notLegendary));
+            IList<Item> Items = new List<Item> { new Item { Name = name, SellIn = sellIn, Quality = quality } };
+            GildedRose app = new GildedRose(Items);
+            app.UpdateQuality();
+            Assert.Equal(sellIn - 1, Items[0].SellIn);
         }
 
-        [TestMethod]
-        public void IncrementQuality()
+        [Theory]
+        [InlineData("spoon", 0, 10)]
+        [InlineData("fork", 0, 5)]
+        public void UpdateQuality_WithClassicalItemAndSellinPast_DecreasesQualityTwice(string name, int sellIn, int quality)
         {
-            //Arrange
-            Item item = new Item { Name = "Coco l'asticot", SellIn = 0, Quality = 0 };
-            Item secondItem = new Item { Name = "Coco l'asticot", SellIn = 0, Quality = 9000 };
-
-            //Act 
-            int quality = _gildedRose.IncrementQuality(item);
-            int secondQuality = _gildedRose.IncrementQuality(secondItem);
-
-            //Assert
-            Assert.AreEqual(1, quality);
-            Assert.AreEqual(9000, secondQuality);
+            IList<Item> Items = new List<Item> { new Item { Name = name, SellIn = sellIn, Quality = quality } };
+            GildedRose app = new GildedRose(Items);
+            app.UpdateQuality();
+            Assert.Equal(quality - 2, Items[0].Quality);
         }
 
-        [TestMethod]
-        public void CanIIncreaseQuality()
+        [Theory]
+        [InlineData("Aged Brie", 10, 0)]
+        public void UpdateQuality_WithAgedBrie_Increases(string name, int sellIn, int quality)
         {
-            //Arrange
-            Item quanteNeuf = new Item { Name = "Coco l'asticot", SellIn = 0, Quality = 49 };
-            Item cinquante = new Item { Name = "Coco l'asticot", SellIn = 0, Quality = 50 };
-            Item autre = new Item { Name = "Coco l'asticot", SellIn = 0, Quality = 51 };
-
-            //Act
-            bool bQuaranteNeuf = _gildedRose.CanIIncreaseQuality(quanteNeuf);
-            bool bCinquante = _gildedRose.CanIIncreaseQuality(cinquante);
-            bool bAutre = _gildedRose.CanIIncreaseQuality(autre);
-
-            //Assert
-            Assert.AreEqual(true, bQuaranteNeuf);
-            Assert.AreEqual(true, bCinquante);// Weird
-            Assert.AreEqual(false, bAutre);
+            IList<Item> Items = new List<Item> { new Item { Name = name, SellIn = sellIn, Quality = quality } };
+            GildedRose app = new GildedRose(Items);
+            app.UpdateQuality();
+            Assert.Equal(quality + 1, Items[0].Quality);
+            Assert.Equal(sellIn - 1, Items[0].SellIn);
         }
 
-        [TestMethod]
-        public void IsBackstagePasse()
+        [Theory]
+        [InlineData("Backstage passes to a TAFKAL80ETC concert", 10, 10)]
+        public void UpdateQuality_WithBackstagePassesAndSellin10_IncreasesBy2(string name, int sellIn, int quality)
         {
-            //Act
-            Item item = new Item { Name = "Backstage", SellIn = 0, Quality = 49 };
-            Item secondItem = new Item { Name = "random item", SellIn = 0, Quality = 49 };
-
-            //Arrange
-            bool result = _gildedRose.IsBackstagePasse(item);
-            bool secondResult = _gildedRose.IsBackstagePasse(secondItem);
-
-            //Assert
-            Assert.IsTrue(result);
-            Assert.IsFalse(secondResult);
+            IList<Item> Items = new List<Item> { new Item { Name = name, SellIn = sellIn, Quality = quality } };
+            GildedRose app = new GildedRose(Items);
+            app.UpdateQuality();
+            Assert.True(true);
         }
 
-        [TestMethod]
-        public void GetQualityThreshold()
+        [Theory]
+        [InlineData("Backstage passes to a TAFKAL80ETC concert", 5, 10)]
+        public void UpdateQuality_WithBackstagePassesAndSellinBelow6_IncreasesBy3(string name, int sellIn, int quality)
         {
-            //Act
-            Item firstItem = new Item { Name = "random item", SellIn = 3, Quality = 49 };
-            Item secondItem = new Item { Name = "random item", SellIn = 8, Quality = 49 };
-            Item thirdItem = new Item { Name = "random item", SellIn = 30, Quality = 49 };
+            IList<Item> Items = new List<Item> { new Item { Name = name, SellIn = sellIn, Quality = quality } };
+            GildedRose app = new GildedRose(Items);
+            app.UpdateQuality();
+            Assert.Equal(quality + 3, Items[0].Quality);
+            Assert.Equal(sellIn - 1, Items[0].SellIn);
+        }
 
-            //Arrange
-            QualityThreshold first =  _gildedRose.GetQualityThreshold(firstItem);
-            QualityThreshold second = _gildedRose.GetQualityThreshold(secondItem);
-            QualityThreshold third = _gildedRose.GetQualityThreshold(thirdItem);
+        [Theory]
+        [InlineData("Backstage passes to a TAFKAL80ETC concert", 0, 10)]
+        public void UpdateQuality_WithBackstagePassesAfterConcert_DropsTo0(string name, int sellIn, int quality)
+        {
+            IList<Item> Items = new List<Item> { new Item { Name = name, SellIn = sellIn, Quality = quality } };
+            GildedRose app = new GildedRose(Items);
+            app.UpdateQuality();
+            Assert.Equal(0, Items[0].Quality);
+        }
 
-            //Assert
-            Assert.AreEqual(first, QualityThreshold.TripleQuality);
-            Assert.AreEqual(second, QualityThreshold.DoubleQuality);
-            Assert.AreEqual(third, QualityThreshold.MaxQuality);
+        [Theory]
+        [InlineData("Aged Brie", 10, 50)]
+        public void UpdateQuality_WithAgedBrie_CannotBeAbove50(string name, int sellIn, int quality)
+        {
+            IList<Item> Items = new List<Item> { new Item { Name = name, SellIn = sellIn, Quality = quality } };
+            GildedRose app = new GildedRose(Items);
+            app.UpdateQuality();
+            Assert.Equal(quality, Items[0].Quality);
+        }
+
+        [Theory]
+        [InlineData("Sulfuras, Hand of Ragnaros", 10, 10)]
+        public void UpdateQuality_WithSulfuras_CannotDecrease(string name, int sellIn, int quality)
+        {
+            IList<Item> Items = new List<Item> { new Item { Name = name, SellIn = sellIn, Quality = quality } };
+            GildedRose app = new GildedRose(Items);
+            app.UpdateQuality();
+            Assert.Equal(quality, Items[0].Quality);
+        }
+
+        [Theory (Skip = "Not yet implemented")]
+        [InlineData("Conjured", 10, 10)]
+        public void UpdateQuality_WithConjuredItem_LoosesTwiceTheQuality(string name, int sellIn, int quality)
+        {
+            IList<Item> Items = new List<Item> { new Item { Name = name, SellIn = sellIn, Quality = quality } };
+            GildedRose app = new GildedRose(Items);
+            app.UpdateQuality();
+            Assert.Equal(quality - 2, Items[0].Quality);
         }
     }
 }
