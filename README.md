@@ -9,7 +9,7 @@ In order to make it easier, we added some unit tests, they don't cover everythin
 
 There is a global "integration" test named "ApprovalTest" this test ensure that the run of your program.cs is still the same as expected. You will have to edit "ApprovalTest.ThirtyDays.approved.txt" once the conjured item added.
 # Do
-* Add your name at tthe top of the `GildedRose` class please
+* Add your name at the top of the `GildedRose` class please
 * Read carrefully the following text
 * Ask question if needed
 * Enjoy
